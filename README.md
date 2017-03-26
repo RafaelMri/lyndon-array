@@ -48,21 +48,21 @@ sizeof(int_t) = 4 bytes
 Text = graindraining$
 TOTAL:
 CLOCK = 0.000033 TIME = 0.000000
-i	SA	LA	BWT	suffixes
-0	13	2	$	graindraining$
-1	2	1	g	raindraining$
-2	7	11	r	aindraining$
-3	5	2	a	indraining$
-4	12	1	i	ndraining$
-5	0	2	n	draining$
-6	3	1	d	raining$
-7	10	6	r	aining$
+i	SA	pLA	BWT	suffixes
+0	13	1	g	$
+1	2	11	r	aindraining$
+2	7	6	r	aining$
+3	5	2	n	draining$
+4	12	1	n	g$
+5	0	2	$	graindraining$
+6	3	2	a	indraining$
+7	10	2	n	ing$
 8	8	2	a	ining$
-9	4	1	i	ning$
-10	11	2	n	ing$
-11	9	1	i	ng$
-12	1	1	n	g$
-13	6	1	g	$
+9	4	1	i	ndraining$
+10	11	1	i	ng$
+11	9	1	i	ning$
+12	1	1	g	raindraining$
+13	6	1	d	raining$
 isLyndonArray!!
 malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 ```

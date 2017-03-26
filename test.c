@@ -36,25 +36,13 @@ int main(int argc, char *argv[]){
 	sacak((unsigned char *)Text, (uint_t*)SA, n);
 
 	// output
-	#if PERMUTED
-		printf("i\tSA\tpLA\tBWT\tsuffixes\n");
-	#else
-		printf("i\tSA\tLA\tBWT\tsuffixes\n");
-	#endif
+	printf("i\tSA\tpLA\tBWT\tsuffixes\n");
 	for(i = 0; i < n; ++i) {
 
-		#if PERMUTED
-			char j = (SA[i])? Text[SA[i]-1]:'$';
-		#else
-			char j = (i)? Text[i-1]:'$';
-		#endif
-		printf("%d\t%d\t%d\t%c\t",i, SA[i], LA[i],j);
+		char j = (SA[i])? Text[SA[i]-1]:'$';
+		printf("%d\t%d\t%d\t%c\t",i, SA[i], LA[SA[i]],j);
 		
-		#if PERMUTED
-		    int start=SA[i];
-		#else
-		    int start=i;
-		#endif
+		int start=SA[i];
 
 		uint_t k;	
 		for(k = start; k < n; ++k) {
