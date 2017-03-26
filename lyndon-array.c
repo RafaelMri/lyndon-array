@@ -9,7 +9,7 @@
 	#define STEP_TIME 1
 #endif
 
-#define SIGMA 255
+#define SIGMA 256
 
 #define END_MARKER '$'
 
