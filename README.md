@@ -1,4 +1,4 @@
-# lyndon-bwt
+# lyndon-array
 
 This algorithm computes the Lyndon-array (LA) of string s[0, n-1] during the BWT inversion.
 
@@ -38,7 +38,7 @@ gcc test.c -o test sacak-lcp.o lyndon-array.o malloc_count.o -ldl
 **Run a test:**
 
 ```c
-./test banaananaanana
+./test graindraining
 ```
 
 **Output:**
@@ -70,4 +70,3 @@ malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 ## References
 
 \[1\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1-15, 2013
-
