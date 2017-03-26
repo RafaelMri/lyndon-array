@@ -11,6 +11,8 @@
 
 #define SIGMA 255
 
+#define END_MARKER '$'
+
 //0 = Lyndon-array (LA)
 //1 = permuted LA (in suffix-ordering)
 #ifndef PERMUTED
@@ -138,7 +140,7 @@ int_t i;
 	//2. compute BWT
 	unsigned char* bwt = malloc(n*sizeof(unsigned char));
 	for(i=0; i<n; i++){
-		bwt[i] = (SA[i])?s[SA[i]-1]:'$';
+		bwt[i] = (SA[i])?s[SA[i]-1]:0;
 	}	
 
 	#if STEP_TIME
@@ -250,11 +252,7 @@ uint_t i;
 	
 		for(i = 0; i < n; ++i) {
 	
-			#if PERMUTED
-				char j = (SA[i])? s[SA[i]-1]:'$';
-			#else
-				char j = (i)? s[i-1]:'$';
-			#endif
+			char j = (SA[i])? s[SA[i]-1]:END_MARKER;
 			printf("%d\t%d\t%d\t%c\t",i, SA[i], LA[i],j);
 			
 			#if PERMUTED
@@ -330,6 +328,7 @@ int compute_nsv(uint_t* NSV, uint_t *array, int_t n){
         }
 
         NSV[0] = stack_top(&S).i;
+	free(S.array);
 
 return 0;
 }
@@ -411,6 +410,7 @@ int_t i;
 
 	free(SA);
 	free(ISA);
+	free(NSV);
 
 return 0;
 }

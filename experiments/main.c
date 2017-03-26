@@ -37,7 +37,7 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 //			if(R[i][j]<255) str[l++] = R[i][j]+1;
 			str[l++] = R[i][j];
 		}
-//		str[l++] = 1; //add 1 as separator
+		str[l++] = 1; //add 1 as separator
 	}
 
 	str[l++]=0;
