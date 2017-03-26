@@ -373,8 +373,8 @@ int_t i;
 
 	//3. compute NSV
 
-	uint_t *NSV = (uint_t*) malloc(n*sizeof(uint_t));
-	//uint_t *NSV = A;
+	//uint_t *NSV = (uint_t*) malloc(n*sizeof(uint_t));
+	uint_t *NSV = SA; //(in the space of SA[0,n-1])
 	compute_nsv(NSV, ISA, n);
 	NSV[n-1]=n;
 
@@ -408,7 +408,7 @@ int_t i;
 		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
 	#endif
 
-	free(SA);
+	//free(SA);
 	free(ISA);
 	free(NSV);
 
