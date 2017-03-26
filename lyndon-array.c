@@ -316,7 +316,8 @@ int compute_nsv(uint_t* NSV, uint_t *array, int_t n){
 	stack_init(&S,STACK_SIZE);
 	stack_push(&S, 0, -1);//(idx, value)=(pos, step)
 
-        for(int_t i=n-1; i>0; i--){
+	int_t i;
+        for(i=n-1; i>0; i--){
 
                 NSV[i] = stack_top(&S).i;
 		
