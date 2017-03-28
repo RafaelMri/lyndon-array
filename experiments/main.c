@@ -128,8 +128,13 @@ int VALIDATE=0, MODE=0;
 
 	// validate	
 	if(VALIDATE==1){
-		if(!lyndon_check(str, LA, n, 0)) printf("isNOTLyndonArray!!\n");
-		else printf("isLyndonArray!!\n");
+               if(!lyndon_check(str, LA, n, 0)){
+                       printf("isNOTLyndonArray!!\n");
+                       fprintf(stderr, "ERROR\n");
+               }
+               else {
+                       printf("isLyndonArray!!\n");
+               }
 	}
 
 
