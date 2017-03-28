@@ -16,6 +16,7 @@
 #include "lib/file.h"
 #include "../external/malloc_count/malloc_count.h"
 #include "../external/sacak-lcp.h"
+#include "gsaca_cl/gsaca.h"
 #include "../lyndon-array.h"
 
 #ifndef DEBUG
@@ -116,8 +117,9 @@ int VALIDATE=0, MODE=0;
 			compute_lyndon_nsv(str, (uint_t*)LA, n);
 			break;
 
-		case 3:	printf("## SACA_K and PHI ##\n"); 
+		case 3:	printf("## GSACA-lyndon ##\n"); 
 			time_start(&t_start, &c_start);
+			gsaca_cl(str, (uint_t*)LA, n);
 			fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 			break;
 		

@@ -16,6 +16,7 @@ OUTPUT	= 0
 LIBOBJ = \
 	lib/utils.o\
 	lib/file.o\
+	gsaca_cl/gsaca.o\
 	../external/malloc_count/malloc_count.o\
 	../external/sacak-lcp.o\
 	../lyndon-array.o
