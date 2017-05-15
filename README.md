@@ -73,3 +73,8 @@ malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 \[1\] Louza, F. A., & Smyth W. F., Telles, G. P.: Lyndon Array Construction during Burrows-Wheeler Inversion. Submitted to SPIRE (2017).
 
 \[2\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1-15, 2013
+
+
+## Thanks:
+
+Thanks to Uwe Baier for kindly providing the source code of algorithm Baier-Lyndon (link)[https://github.com/felipelouza/lyndon-array/tree/master/experiments/gsaca\_cl].

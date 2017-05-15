@@ -1,9 +1,9 @@
 /*
- * Optimal suffix sorting and LCP array construction for constant alphabets
+ * Lyndon Array Construction during Burrows-Wheeler Inversion
  *
- * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
+ * Authors: Felipe A. Louza, W. F. Smyth, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
- * 15/01/2016
+ * 15/04/2016
  *
  */
 
@@ -137,9 +137,8 @@ int VALIDATE=0, MODE=0;
                }
 	}
 
-
 	#if DEBUG
-//		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
+		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
 	#endif
 
 	free(LA);
