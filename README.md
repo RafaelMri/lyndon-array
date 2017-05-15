@@ -1,10 +1,10 @@
 # lyndon-array
 
-This algorithm computes the Lyndon-array (LA) of string s[0, n-1] during the BWT inversion.
+This code implements an algorithm \[1\] that computes the Lyndon-array (LA) of string s[0, n-1] during the Burrows-Wheeler inversion.
 
 ## Introduction
 
-First, we compute SA \[1\] and BWT of s[0, n-1], then during the BWT-inversion we compute LA.
+First, we compute the suffix array (SA) \[2\] and the Burrows-Wheeler transform (BWT) of s[0, n-1], then during the Burrows-Wheeler inversion we compute LA.
 
 ## Build requirements
 
@@ -48,6 +48,7 @@ sizeof(int_t) = 4 bytes
 Text = graindraining$
 TOTAL:
 CLOCK = 0.000033 TIME = 0.000000
+pLA = LA[SA[i]] (permuted LA)
 i	SA	pLA	BWT	suffixes
 0	13	1	g	$
 1	2	11	r	aindraining$
@@ -69,4 +70,6 @@ malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 
 ## References
 
-\[1\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1-15, 2013
+\[1\] Louza, F. A., & Smyth W. F., Telles, G. P.: Lyndon Array Construction during Burrows-Wheeler Inversion. Submitted to SPIRE (2017).
+
+\[2\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1-15, 2013

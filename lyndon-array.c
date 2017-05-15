@@ -6,7 +6,7 @@
 #endif
 
 #ifndef STEP_TIME
-	#define STEP_TIME 1
+	#define STEP_TIME 0
 #endif
 
 #define SIGMA 256

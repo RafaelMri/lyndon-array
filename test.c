@@ -7,7 +7,7 @@
 #include "lyndon-array.h"
 
 #ifndef CHECK
-	#define CHECK 0
+	#define CHECK 1
 #endif
 
 int main(int argc, char *argv[]){
@@ -36,6 +36,7 @@ int main(int argc, char *argv[]){
 	sacak((unsigned char *)Text, (uint_t*)SA, n);
 
 	// output
+	printf("pLA = LA[SA[i]] (permuted LA)\n");
 	printf("i\tSA\tpLA\tBWT\tsuffixes\n");
 	for(i = 0; i < n; ++i) {
 
