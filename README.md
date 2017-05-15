@@ -77,4 +77,4 @@ malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 
 ## Thanks:
 
-Thanks to Uwe Baier for kindly providing the source code of algorithm Baier-Lyndon (link)[https://github.com/felipelouza/lyndon-array/tree/master/experiments/gsaca\_cl].
+Thanks to Uwe Baier for kindly providing the source code of algorithm Baier-Lyndon [link](https://github.com/felipelouza/lyndon-array/tree/master/experiments/gsaca\_cl).
