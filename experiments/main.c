@@ -137,9 +137,9 @@ int VALIDATE=0, MODE=0;
                }
 	}
 
-	#if DEBUG
-		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
-	#endif
+//	#if DEBUG
+//		suffix_array_print(LA, (unsigned char*)str, min(10,n), sizeof(char));
+//	#endif
 
 	free(LA);
 	free(str);

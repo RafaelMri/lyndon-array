@@ -263,7 +263,7 @@ uint_t i;
 	
 			uint_t k;	
 			for(k = start; k < n; ++k) {
-				printf("%c", s[k]);
+				printf("%c", s[k]-1);
 			}
 			printf("$\n");
 		}
@@ -362,7 +362,8 @@ int_t i;
 	#endif
 
 	//2. compute ISA
-	uint_t *ISA = (uint_t*) malloc(n*sizeof(uint_t));
+	uint_t *ISA = A;
+	//uint_t *ISA = (uint_t*) malloc(n*sizeof(uint_t));
 	for(i=0; i<n; i++) ISA[SA[i]]=i;
 
 	#if STEP_TIME
@@ -384,7 +385,6 @@ int_t i;
 		printf("4. Compute Lyndon:\n");
 	#endif
 
-	//for(i=0; i<n; i++) printf("%d\t%d\t%d\t%d\t%d\n", i, SA[i], ISA[i], NSV[i], 0);
 
 	#if PRINT
 		printf("step\tpos\tT^{rev}\tLyndon\n");
@@ -392,12 +392,12 @@ int_t i;
 
 	uint_t *LA = A;
 
-	uint_t pos = 0;
+//	uint_t pos = 0;
 	for(i=0; i < n; i++){	
-
-		pos = ISA[i];
-		LA[pos] = NSV[pos]-pos;
+//		pos = ISA[i];
+		LA[i] = NSV[i]-i;
 	}
+//	for(i=0; i<n; i++) printf("%d)\t%d\t%d\t%d\t%d\n", i+1, SA[i]+1, ISA[i]+1, NSV[i]+1, LA[i]);
 
 	#if STEP_TIME
 		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
@@ -408,9 +408,9 @@ int_t i;
 		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
 	#endif
 
-	//free(SA);
-	free(ISA);
-	free(NSV);
+	free(SA);
+	//free(ISA);
+	//free(NSV);
 
 return 0;
 }
