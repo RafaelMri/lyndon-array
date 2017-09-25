@@ -120,6 +120,7 @@ int VALIDATE=0, MODE=0;
 		case 3:	printf("## GSACA-lyndon ##\n"); 
 			time_start(&t_start, &c_start);
 			gsaca_cl(str, (uint_t*)LA, n);
+			printf("TOTAL:\n");
 			fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 			break;
 		
@@ -141,19 +142,18 @@ int VALIDATE=0, MODE=0;
                }
 	}
 
-//	#if DEBUG
-//		suffix_array_print(LA, (unsigned char*)str, min(10,n), sizeof(char));
-//	#endif
 
-	for(i=0; i<n; i++){
+	#if DEBUG
+	for(i=0; i<min(n,10); i++){
 
 		printf("%" PRIdN ") %" PRIdN "\t", i, LA[i]);
 	
 		int_t j=i;
-		for(j=i; (j<n); j++)
+		for(j=i; j<(int_t) min(i+10,i+LA[i]+1); j++)
 			printf("%c", str[j]-1);
 		printf("\n");
 	}
+	#endif
 
 	free(LA);
 	free(str);
