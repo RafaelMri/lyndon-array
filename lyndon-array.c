@@ -417,3 +417,47 @@ return 0;
 
 /**********************************************************************/
 
+int compute_lyndon_max_lyn(unsigned char *s, uint_t *A, uint_t n){
+
+int_t j;
+
+	#if TIME
+		time_t t_total= 0;clock_t c_total= 0;
+		tstart(&t_total, &c_total); 
+	#endif
+
+	uint_t *LA = A;
+	for(j=0; j < n-1; j++){	
+
+		uint_t i = j+1;
+		uint_t max = j+1;
+
+		while(i<n){
+
+			uint_t k = 0;
+			while(s[j+k]==s[i+k]) k++;
+
+			if(s[j+k]<s[i+k]){
+				i+=k+1;
+				max=i;
+			}
+			else{
+				LA[j]=max-j;	
+				break;
+			}
+		}
+	}
+	LA[n-1]=1;
+
+//	for(j=0; j<n; j++) printf("%d)\t%d\n", j+1, LA[j]);
+
+	#if TIME
+		printf("TOTAL:\n");
+		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
+	#endif
+
+return 0;
+}
+
+/**********************************************************************/
+

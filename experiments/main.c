@@ -123,6 +123,10 @@ int VALIDATE=0, MODE=0;
 			fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 			break;
 		
+		case 4:	printf("## MAX_LYN ##\n"); 
+			compute_lyndon_max_lyn(str, (uint_t*)LA, n);
+			break;
+
 		default: break;
 	}
 
@@ -140,6 +144,16 @@ int VALIDATE=0, MODE=0;
 //	#if DEBUG
 //		suffix_array_print(LA, (unsigned char*)str, min(10,n), sizeof(char));
 //	#endif
+
+	for(i=0; i<n; i++){
+
+		printf("%" PRIdN ") %" PRIdN "\t", i, LA[i]);
+	
+		int_t j=i;
+		for(j=i; (j<n); j++)
+			printf("%c", str[j]-1);
+		printf("\n");
+	}
 
 	free(LA);
 	free(str);

@@ -54,6 +54,15 @@ int compute_lyndon_bwt(unsigned char *s, uint_t *A, uint_t n);
  */
 int compute_lyndon_nsv(unsigned char *s, uint_t *A, uint_t n);
 
+/** @brief computes the lyndon array of string s[0, n-1] 
+ *
+ *  @param s	input string with s[n-1]=0
+ *  @param A 	lyndon array 
+ *  @param n	string length
+ *  @return -1 if an error occured, otherwise the depth of the recursive calls.
+ */
+int compute_lyndon_max_lyn(unsigned char *s, uint_t *A, uint_t n);
+
 
 /** @brief checks if A[0, n-1] is the lyndon array of string s[0, n-1]
  *
