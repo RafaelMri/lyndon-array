@@ -23,6 +23,10 @@
 	#define PRINT 0
 #endif
 
+#ifndef SAVE_SPACE
+	#define SAVE_SPACE 1
+#endif
+
 #define STACK_SIZE 10240/(sizeof(uint_t)*2) //10KB
 
 /**********************************************************************/
@@ -84,11 +88,6 @@ void stack_print(stack *S){
 	
 	printf("%d\t(%d, %d)\n", i, S->array[i].i, S->array[i].j);
 
-//	while(S->top>0){
-//		printf("%d\t(%d, %d)\n", i, stack_top(S).i, stack_top(S).j);
-//		stack_pop(S);
-//	}
-
 }
 
 /****************************************************************************/
@@ -107,7 +106,7 @@ double tstop(time_t t_time, clock_t c_clock){
 
 /**********************************************************************/
 
-int compute_lyndon_bwt(unsigned char *s, uint_t *A, uint_t n){
+int compute_lyndon_bwt_10n(unsigned char *s, uint_t *A, uint_t n){
 
 int_t i;
 
@@ -217,7 +216,6 @@ int_t i;
 		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
 	#endif
 
-
 	free(S.array);
 	free(C);
 	free(bwt);
@@ -228,6 +226,183 @@ int_t i;
 
 return 0;
 }
+
+/**********************************************************************/
+
+unsigned char find_symbol(uint_t pos, uint_t* F, unsigned char* Alpha, uint_t n){
+
+	//binary search
+	uint_t a=0;
+	uint_t b=n-2;
+
+	uint_t i=0;
+	while(a<=b){
+		i=a+(b-a)/2;
+		if(pos>=F[i] && pos<F[i+1]){
+			return Alpha[i];
+		}
+		if(pos>F[i]) a=i+1;
+		else b=i-1;
+	}
+
+	return 0;
+}
+
+int compute_lyndon_bwt_9n(unsigned char *s, uint_t *A, uint_t n){
+
+int_t i;
+
+	#if TIME
+		time_t t_total= 0;clock_t c_total= 0;
+		tstart(&t_total, &c_total); 
+	#endif
+
+	#if STEP_TIME
+		time_t t_time = 0;clock_t c_time = 0;
+		tstart(&t_time, &c_time); 
+		printf("1. SA construction:\n");
+	#endif
+	
+	// 1. sort
+	uint_t *SA = A;
+	sacak(s, SA, n);
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("2. Obtain BWT:\n"); 
+	#endif
+
+	//2. compute BWT
+	unsigned char* tmp = (unsigned char*) malloc(n*sizeof(unsigned char));
+	for(i=0; i<n; i++)
+		tmp[i] = s[i];		
+
+	unsigned char* bwt = s;
+	//unsigned char* bwt = malloc(n*sizeof(unsigned char));
+	for(i=0; i<n; i++)
+		bwt[i] = (SA[i])?tmp[SA[i]-1]:0;
+
+	free(tmp);
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("3. Compute LF:\n"); 
+	#endif
+
+	//3. compute LF-array (in the space of SA[0,n-1])
+	uint_t *LF = (uint_t*) malloc(n*sizeof(uint_t));
+	uint_t *C = (uint_t*) malloc(SIGMA*sizeof(uint_t));
+
+	uint_t sigma = 0;
+
+	//counter
+	for(i=0; i<SIGMA; i++) C[i]=0;
+	for(i=0; i<n; i++){
+		if(!C[bwt[i]]) sigma++;
+		C[bwt[i]]++;
+	}
+
+	sigma++;
+	uint_t *F = (uint_t*) malloc(sigma*sizeof(uint_t));
+	unsigned char *Alpha = (unsigned char*) malloc(sigma*sizeof(unsigned char));
+	for(i=0; i<sigma; i++) F[i]=0;
+
+	//sentinel
+	F[sigma-1]=n;
+	Alpha[sigma-1]=0;
+
+	uint_t sum=0;
+	uint_t j=0;
+	for(i=0; i<SIGMA; i++){
+		sum+=C[i]; 
+		if(C[i]){ 
+			C[i]=sum-C[i];
+			F[j]=C[i];
+			Alpha[j]=i;
+			j++;
+		}
+	}
+
+	for(i=0; i<n; i++){
+		LF[i] = C[bwt[i]]++;
+	}
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("4. Compute Lyndon:\n");
+	#endif
+
+	//BWT-inversion and Lyndon array construction
+	stack S;
+	S.top=0; S.size=STACK_SIZE;
+	stack_init(&S,STACK_SIZE);
+	stack_push(&S, 0, 0);//(0, 0)
+
+	#if PRINT
+		printf("step\tpos\tT^{rev}\tLyndon\n");
+	#endif
+
+	uint_t *LA = A;
+
+	uint_t pos = 0;
+	uint_t step = 1;//(n-1)-i
+
+	for(i=n-1; i >= 0; i--){	
+
+		s[i] = find_symbol(pos, F, Alpha, sigma);
+		
+		while(stack_top(&S).i > pos) stack_pop(&S);
+
+		uint_t next = LF[pos];
+
+		#if PERMUTED
+			LA[pos] = step-stack_top(&S).j;
+		#else
+			LA[i] = step-stack_top(&S).j;
+		#endif
+
+		#if PRINT
+			printf("%d\t%d\t%c\t%d\n", step, pos, bwt[pos], step-stack_top(&S).j);
+		#endif
+
+		stack_push(&S, pos, step++);
+
+		pos = next; //pos = LF(pos)
+	}
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+	#endif
+
+	#if TIME
+		printf("TOTAL:\n");
+		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
+	#endif
+
+
+	free(S.array);
+	free(C);
+	free(LF);
+
+	free(F);
+	free(Alpha);
+
+return 0;
+}
+
+int compute_lyndon_bwt(unsigned char *s, uint_t *A, uint_t n){
+
+	#if SAVE_SPACE
+		compute_lyndon_bwt_9n(s, A, n);
+	#else 
+		compute_lyndon_bwt_10n(s, A, n);
+	#endif
+	return 0;
+}
+
 
 /**********************************************************************/
 
@@ -363,7 +538,6 @@ int_t i;
 
 	//2. compute ISA
 	uint_t *ISA = A;
-	//uint_t *ISA = (uint_t*) malloc(n*sizeof(uint_t));
 	for(i=0; i<n; i++) ISA[SA[i]]=i;
 
 	#if STEP_TIME
@@ -373,8 +547,6 @@ int_t i;
 	#endif
 
 	//3. compute NSV
-
-	//uint_t *NSV = (uint_t*) malloc(n*sizeof(uint_t));
 	uint_t *NSV = SA; //(in the space of SA[0,n-1])
 	compute_nsv(NSV, ISA, n);
 	NSV[n-1]=n;
@@ -391,13 +563,9 @@ int_t i;
 	#endif
 
 	uint_t *LA = A;
-
-//	uint_t pos = 0;
 	for(i=0; i < n; i++){	
-//		pos = ISA[i];
 		LA[i] = NSV[i]-i;
 	}
-//	for(i=0; i<n; i++) printf("%d)\t%d\t%d\t%d\t%d\n", i+1, SA[i]+1, ISA[i]+1, NSV[i]+1, LA[i]);
 
 	#if STEP_TIME
 		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
@@ -448,8 +616,6 @@ int_t j;
 		}
 	}
 	LA[n-1]=1;
-
-//	for(j=0; j<n; j++) printf("%d)\t%d\n", j+1, LA[j]);
 
 	#if TIME
 		printf("TOTAL:\n");
