@@ -31,7 +31,7 @@
 #endif
 
 #ifndef COMPUTE_BWT 
-	#define COMPUTE_BWT 0
+	#define COMPUTE_BWT 1
 #endif
 
 #define STACK_SIZE 10240/(sizeof(uint_t)*2) //10KB
