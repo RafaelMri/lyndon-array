@@ -426,6 +426,12 @@ int_t i;
 		printf("2. Compute C:\n"); 
 	#endif
 
+	//2. compute BWT
+	uint_t* bwt = SA; 
+	for(i=0; i<n; i++){
+		bwt[i] = (SA[i])?s[SA[i]-1]:0;
+	}	
+
 	//2. compute C 
 
 	uint_t *C = (uint_t*) malloc(SIGMA*sizeof(uint_t));
@@ -445,7 +451,7 @@ int_t i;
 
 	//3. compute LF-array (in the space of SA[0,n-1])
 	uint_t *LF = SA; 
-	for(i=0; i<n; i++) LF[i] = C[bwt(i)]++;
+	for(i=0; i<n; i++) LF[i] = C[bwt[i]]++;
 
 	#if STEP_TIME
 		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
