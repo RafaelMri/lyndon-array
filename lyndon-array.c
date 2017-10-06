@@ -430,7 +430,7 @@ int_t i;
 
 	uint_t *C = (uint_t*) malloc(SIGMA*sizeof(uint_t));
 	for(i=0; i<SIGMA; i++) C[i]=0;
-	for(i=0; i<n; i++) C[bwt(i)]++;
+	for(i=0; i<n; i++) C[s[i]]++;
 
 	uint_t sum=0;
 	for(i=0; i<SIGMA; i++){
