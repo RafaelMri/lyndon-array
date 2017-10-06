@@ -423,7 +423,7 @@ int_t i;
 	#if STEP_TIME
 		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
 		tstart(&t_time, &c_time);
-		printf("2. Compute C:\n"); 
+		printf("2. Compute BWT andBWT and  C:\n"); 
 	#endif
 
 	//2. compute BWT
