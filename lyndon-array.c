@@ -1,6 +1,9 @@
 #include "lyndon-array.h"
 #include "external/sacak-lcp.h"
 
+//get bwt[i] 
+#define bwt(i) ((SA[i])?s[SA[i]-1]:0)
+
 #ifndef TIME
 	#define TIME 1
 #endif
@@ -25,6 +28,10 @@
 
 #ifndef SAVE_SPACE
 	#define SAVE_SPACE 1
+#endif
+
+#ifndef COMPUTE_BWT 
+	#define COMPUTE_BWT 0
 #endif
 
 #define STACK_SIZE 10240/(sizeof(uint_t)*2) //10KB
@@ -393,10 +400,114 @@ int_t i;
 return 0;
 }
 
+//Giovanni's version
+int compute_lyndon_text_9n(unsigned char *s, uint_t *A, uint_t n){
+
+int_t i;
+
+	#if TIME
+		time_t t_total= 0;clock_t c_total= 0;
+		tstart(&t_total, &c_total); 
+	#endif
+
+	#if STEP_TIME
+		time_t t_time = 0;clock_t c_time = 0;
+		tstart(&t_time, &c_time); 
+		printf("1. SA construction:\n");
+	#endif
+	
+	// 1. sort
+	uint_t *SA = (uint_t*) malloc(n*sizeof(uint_t));
+	sacak(s, SA, n);
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("2. Compute C:\n"); 
+	#endif
+
+	//2. compute C 
+
+	uint_t *C = (uint_t*) malloc(SIGMA*sizeof(uint_t));
+	for(i=0; i<SIGMA; i++) C[i]=0;
+	for(i=0; i<n; i++) C[bwt(i)]++;
+
+	uint_t sum=0;
+	for(i=0; i<SIGMA; i++){
+		sum+=C[i]; C[i]=sum-C[i];
+	}
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("3. Compute LF:\n"); 
+	#endif
+
+	//3. compute LF-array (in the space of SA[0,n-1])
+	uint_t *LF = SA; 
+	for(i=0; i<n; i++) LF[i] = C[bwt(i)]++;
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+		tstart(&t_time, &c_time);
+		printf("4. Compute Lyndon:\n");
+	#endif
+
+	//Lyndon array construction
+	stack S;
+	S.top=0; S.size=STACK_SIZE;
+	stack_init(&S,STACK_SIZE);
+	stack_push(&S, 0, 0);//(0, 0)
+
+	#if PRINT
+		printf("step\tpos\tT^{rev}\tLyndon\n");
+	#endif
+
+	uint_t *LA = A;
+
+	uint_t pos = 0;
+	uint_t step = 1;//(n-1)-i
+
+	for(i=n-1; i >= 0; i--){	
+
+		while(stack_top(&S).i > pos) stack_pop(&S);
+		uint_t next = LF[pos];
+
+		#if PERMUTED
+			LA[pos] = step-stack_top(&S).j;
+		#else
+			LA[i] = step-stack_top(&S).j;
+		#endif
+
+		stack_push(&S, pos, step++);
+		pos = next; //pos = LF(pos)
+	}
+
+	#if STEP_TIME
+		fprintf(stderr,"%.6lf\n", tstop(t_time, c_time));
+	#endif
+
+	#if TIME
+		printf("TOTAL:\n");
+		fprintf(stderr,"%.6lf\n", tstop(t_total, c_total)); 
+	#endif
+
+	free(S.array);
+	free(C);
+	free(LF);
+
+return 0;
+}
+
+
 int compute_lyndon_bwt(unsigned char *s, uint_t *A, uint_t n){
 
 	#if SAVE_SPACE
-		compute_lyndon_bwt_9n(s, A, n);
+		#if COMPUTE_BWT
+			compute_lyndon_bwt_9n(s, A, n);
+		#else
+			compute_lyndon_text_9n(s, A, n);
+		#endif
 	#else 
 		compute_lyndon_bwt_10n(s, A, n);
 	#endif
