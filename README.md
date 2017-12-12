@@ -70,7 +70,8 @@ malloc_count ### exiting, total: 14,626, peak: 11,386, current: 0
 
 ## References
 
-\[1\] Louza, F. A., & Smyth W. F., Telles, G. P.: Lyndon Array Construction during Burrows-Wheeler Inversion. Submitted to SPIRE (2017).
+\[1\] 
+Louza, F. A., & Smyth W. F., Manzini G., Telles, G. P.: Lyndon Array Construction during Burrows-Wheeler Inversion, arXiv preprint [arXiv:1710.10105](https://arxiv.org/abs/1710.10105)
 
 \[2\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1-15, 2013
 
