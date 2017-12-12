@@ -545,7 +545,7 @@ uint_t i;
 		for(i = 0; i < n; ++i) {
 	
 			char j = (SA[i])? s[SA[i]-1]:END_MARKER;
-			printf("%d\t%d\t%d\t%c\t",i, SA[i], LA[i],j);
+			printf("%d\t%d\t%d\t%c\t",i, SA[i], LA[i],j-1);
 			
 			#if PERMUTED
 			    int start=SA[i];
@@ -554,7 +554,7 @@ uint_t i;
 			#endif
 	
 			uint_t k;	
-			for(k = start; k < n; ++k) {
+			for(k = start; k < n; k++) {
 				printf("%c", s[k]-1);
 			}
 			printf("$\n");

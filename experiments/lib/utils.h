@@ -23,6 +23,10 @@
 	#define M64 0
 #endif
 
+#ifndef DEBUG
+	#define DEBUG 0 
+#endif
+
 #if M64
 	typedef int64_t  int_t;
 	typedef uint64_t uint_t;
