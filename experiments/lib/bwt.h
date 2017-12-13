@@ -24,7 +24,7 @@ int bwt_inplace(char *T, int n);
 
 char* bwt_reverse(char *T, int n);
 
-//computes the permuted Lyndon array (suffix order) in quadratic time
+//computes the Lyndon array during BWT in quadratic time
 int bwt_lyndon_inplace(char *T, uint_t *LA, int n);
 
 /*******************************************************************/
