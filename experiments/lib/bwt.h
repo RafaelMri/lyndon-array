@@ -7,6 +7,13 @@
 
 #include "utils.h"
 
+
+//0 = Lyndon-array (LA)
+//1 = permuted LA (in suffix-ordering)
+#ifndef PERMUTED
+	#define PERMUTED 0
+#endif
+
 /*******************************************************************/
 
 int rank(char *T, char c, int i);

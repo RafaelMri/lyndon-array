@@ -105,14 +105,11 @@ int VALIDATE=0, MODE=0;
 		free(R[i]);
 	free(R);
 
-  char* copy = NULL;
-	if(VALIDATE==1){
-    if(MODE==5){
-      copy = (char*) malloc((n+1)*sizeof(char));
-      strcpy(copy, (char*)str);
-//    printf("copy: %s\n", copy);
+    char* copy = NULL;
+    if(VALIDATE==1 && MODE==5){
+        copy = (char*) malloc((n+1)*sizeof(char));
+        strcpy(copy, (char*)str);
     }
-  }
 
 	//sorted array
 	uint_t *LA = (uint_t*) malloc(n*sizeof(int_t));
@@ -140,7 +137,7 @@ int VALIDATE=0, MODE=0;
 			break;
 
 		case 5:	printf("## BWT_INPLACE_LYN ##\n"); 
-      bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
+            bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
 			break;
 
 		default: break;
@@ -149,32 +146,31 @@ int VALIDATE=0, MODE=0;
 	// validate	
 	if(VALIDATE==1){
 
-    if(MODE==5){
-      free(str);
-      str = (unsigned char*) copy;
-    }
+        if(MODE==5){
+            free(str);
+            str = (unsigned char*) copy;
+        }
 
-    if(!lyndon_check(str, LA, n, 0)){
-      printf("isNOTLyndonArray!!\n");
-      fprintf(stderr, "ERROR\n");
-    }
-    else {
-      printf("isLyndonArray!!\n");
-    }
+        if(!lyndon_check(str, LA, n, 0)){
+            printf("isNOTLyndonArray!!\n");
+            fprintf(stderr, "ERROR\n");
+        }
+        else {
+            printf("isLyndonArray!!\n");
+        }
 	}
 
-
-	#if DEBUG
+    #if DEBUG
 	for(i=0; i<min(n,20); i++){
 
 		printf("%" PRIdN ") %" PRIdN "\t", i, LA[i]);
-  	printf("%c\t", str[i]-1);
+  	    printf("%c\t", str[i]-1);
 		int_t j=i;
 		for(j=i; j<(int_t) min(i+10,i+LA[i]+1); j++)
 			printf("%c", str[j]-1);
 		printf("\n");
 	}
-	#endif
+    #endif
 
 	free(LA);
 	free(str);
