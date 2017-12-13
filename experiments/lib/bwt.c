@@ -73,93 +73,92 @@ return 0;
 
 int bwt_lyndon_suffix_order(char *T, uint_t *LA, int n){
 
-	int p, r=1;
-	int i, s;
+int p, r=1;
+int i, s;
 
-    uint_t size=1;
-    //base cases
-    LA[n-2]=size++;
-    LA[n-1]=size++;
+uint_t size=1;
+//base cases
+LA[n-2]=size++;
+LA[n-1]=size++;
 
-	for(s=n-3; s>=0; s--){
+for(s=n-3; s>=0; s--){
 
-		/*steps 1 and 2*/
-		p=r+1;
-		for(i=s+1, r=0; T[i]!=0; i++)if(T[i]<=T[s])r++;
-		for(; i<n; i++) if(T[i]<T[s])r++;
+	/*steps 1 and 2*/
+	p=r+1;
+	for(i=s+1, r=0; T[i]!=0; i++)if(T[i]<=T[s])r++;
+	for(; i<n; i++) if(T[i]<T[s])r++;
 	
-		T[p+s] = T[s]; //replace('$', T[s]);
+	T[p+s] = T[s]; //replace('$', T[s]);
 
-		for(i=s; i<s+r; i++){
-			T[i] = T[i+1];
-            LA[i] = LA[i+1];
-        }
+	for(i=s; i<s+r; i++){
+		T[i] = T[i+1];
+		LA[i] = LA[i+1];
+  }
 
-		T[s+r] = 0; //END_MARKER;
-        LA[s+r]=size++;
+	T[s+r] = 0; //END_MARKER;
+	LA[s+r]=size++;
+}
+
+for(i=n-1; i>0; i--){
+	uint_t max=0;
+	for(s=i-1; s>=0; s--){
+		if(LA[s]<LA[i] && LA[s]>max) max = LA[s];
 	}
-
-    for(i=n-1; i>0; i--){
-        uint_t max=0;
-        for(s=i-1; s>=0; s--){
-          if(LA[s]<LA[i] && LA[s]>max) max = LA[s];
-        }
-        LA[i]-=max;
-    }
+	LA[i]-=max;
+}
 
 return 0;
 }
 /*******************************************************************/
 int bwt_lyndon_text_order(char *T, uint_t *LA, int n){
 
-	int p, r=1;
-	int i, s;
+int p, r=1;
+int i, s;
 
-    //base cases
-    LA[n-2]=n-1;
-    LA[n-1]=n-2;
+//base cases
+LA[n-2]=n-1;
+LA[n-1]=n-2;
 
-	for(s=n-3; s>=0; s--){
+for(s=n-3; s>=0; s--){
 
-		/*steps 1 and 2*/
-		p=r+1;
-		for(i=s+1, r=0; T[i]!=0; i++)if(T[i]<=T[s])r++;
-		for(; i<n; i++) if(T[i]<T[s])r++;
+	/*steps 1 and 2*/
+	p=r+1;
+	for(i=s+1, r=0; T[i]!=0; i++)if(T[i]<=T[s])r++;
+	for(; i<n; i++) if(T[i]<T[s])r++;
 	
-		T[p+s] = T[s]; //replace('$', T[s]);
-
-		for(i=s; i<s+r; i++){
-		    T[i] = T[i+1];
-        }
-
-		for(i=s+1; i<n; i++){
-		    if(LA[i]<=s+r) LA[i]--; 
-        }
-
-		T[s+r] = 0; //END_MARKER;
-        LA[s]=s+r;
+	T[p+s] = T[s]; //replace('$', T[s]);
+	
+	for(i=s; i<s+r; i++){
+		T[i] = T[i+1];
 	}
+	
+	for(i=s+1; i<n; i++){
+		if(LA[i]<=s+r) LA[i]--; 
+  }
+	
+	T[s+r] = 0; //END_MARKER;
+  LA[s]=s+r;
+}
 
-    //LA = ISA
-    for(i=0; i<n; i++){
-        //find the next suffix smaller than T[i,n]
-        for(s=i+1; s<n; s++){
-          if(LA[s]<LA[i]) break;
-        }
-        LA[i]=s-i;
-    }
+  //LA = ISA
+for(i=0; i<n; i++){
+//find the next suffix smaller than T[i,n]
+	for(s=i+1; s<n; s++){
+		if(LA[s]<LA[i]) break;
+	}
+	LA[i]=s-i;
+}
 
 return 0;
 }
 /*******************************************************************/
 int bwt_lyndon_inplace(char *T, uint_t *LA, int n){
 
-
-    #if PERMUTED
-        bwt_lyndon_suffix_order(T, LA, n);    
-    #else
-        bwt_lyndon_text_order(T, LA, n);    
-    #endif
+#if PERMUTED
+	bwt_lyndon_suffix_order(T, LA, n);    
+#else
+	bwt_lyndon_text_order(T, LA, n);    
+#endif
 
 return 0;
 }
