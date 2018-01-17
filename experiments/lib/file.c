@@ -142,6 +142,7 @@ char** load_multiple_fastq(FILE* f_in, int k, int_t *n){
 
 		len = 0; buf = NULL;
 		ssize_t size = getline(&buf, &len, f_in); // @'s line
+		free(buf);
     if (size <= 1)
     return 0;
 
@@ -153,8 +154,9 @@ char** load_multiple_fastq(FILE* f_in, int k, int_t *n){
 
 		len = 0; buf = NULL;
 		getline(&buf, &len, f_in); // +'s line
+		free(buf);
+		len = 0; buf = NULL;
 		getline(&buf, &len, f_in); // @'s line
-
 		free(buf);
 	}
 
@@ -197,7 +199,9 @@ char** load_multiple_fasta(FILE* f_in, int k, int_t *n){
 
 			strcpy(&c_buffer[i][p], buf);
 			p+=strlen(buf)-1;
-			
+
+			free(buf);
+			buf=NULL; len=0;
 		}
 
 		free(buf);
