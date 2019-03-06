@@ -1,3 +1,4 @@
+// vim: noai:ts=2:sw=2
 /*
  * Lyndon Array Construction during Burrows-Wheeler Inversion
  *
@@ -138,7 +139,7 @@ int VALIDATE=0, MODE=0, COUNT=0;
 			break;
 
 		case 5:	printf("## BWT_INPLACE_LYN ##\n"); 
-      bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
+			bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
 			break;
 
 		default: break;
@@ -146,22 +147,22 @@ int VALIDATE=0, MODE=0, COUNT=0;
 
 	// validate	
 	if(VALIDATE==1){
-
+		
 		if(MODE==5){
 			free(str);
-  		str = (unsigned char*) copy;
-  	}
-
-  	if(!lyndon_check(str, LA, n, 0)){
+			str = (unsigned char*) copy;
+		}
+		
+		if(!lyndon_check(str, LA, n, 0)){
 			printf("isNOTLyndonArray!!\n");
-  		fprintf(stderr, "ERROR\n");
-  	}
-  	else {
+			fprintf(stderr, "ERROR\n");
+		}
+		else {
 			printf("isLyndonArray!!\n");
-  	}
+		}
 	}
 
-  #if DEBUG
+	#if DEBUG
 	for(i=0; i<min(n,20); i++){
 
 		printf("%" PRIdN ") %" PRIdN "\t", i, LA[i]);
@@ -171,7 +172,7 @@ int VALIDATE=0, MODE=0, COUNT=0;
 			printf("%c", str[j]-1);
 		printf("\n");
 	}
-  #endif
+	#endif
 
 	if(COUNT==1){
 		i=0;

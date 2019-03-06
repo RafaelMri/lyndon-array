@@ -12,7 +12,7 @@ K	= 1
 MODE 	= 1
 CHECK	= 1
 OUTPUT	= 0
-COUNT = 0
+COUNT = 1
 
 LIBOBJ = \
 	lib/utils.o\
@@ -29,7 +29,6 @@ DEBUG = 0
 PERMUTED = 0
 STEP_TIME = 1
 CHECK = 1
-COUNT = 1
 SAVE_SPACE = 1
 COMPUTE_BWT = 1
 ##
