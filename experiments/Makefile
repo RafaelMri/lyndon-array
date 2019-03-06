@@ -12,6 +12,7 @@ K	= 1
 MODE 	= 1
 CHECK	= 1
 OUTPUT	= 0
+COUNT = 0
 
 LIBOBJ = \
 	lib/utils.o\
@@ -28,6 +29,7 @@ DEBUG = 0
 PERMUTED = 0
 STEP_TIME = 1
 CHECK = 1
+COUNT = 1
 SAVE_SPACE = 1
 COMPUTE_BWT = 1
 ##
@@ -45,7 +47,7 @@ compile: main.c ${LIBOBJ}
 	$(CC) $(CFLAGS) $(LFLAGS) -o main main.c ${LIBOBJ}
 
 run:
-	./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK) $(COUNT)
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK) $(COUNT)

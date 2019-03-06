@@ -60,10 +60,10 @@ int main(int argc, char** argv){
 time_t t_start=0;
 clock_t c_start=0;
 
-int VALIDATE=0, MODE=0;
+int VALIDATE=0, MODE=0, COUNT=0;
 
-	if(argc!=6){
-		dies(__func__,"argc!=4");
+	if(argc!=7){
+		dies(__func__,"argc!=7");
 	}
 
 	unsigned char **R;
@@ -76,6 +76,7 @@ int VALIDATE=0, MODE=0;
 	sscanf(argv[3], "%d", &k);
 	sscanf(argv[4], "%u", &MODE);
 	sscanf(argv[5], "%u", &VALIDATE);
+	sscanf(argv[6], "%u", &COUNT); //count Lyndon factors 
 
 	file_chdir(c_dir);
 
@@ -105,11 +106,11 @@ int VALIDATE=0, MODE=0;
 		free(R[i]);
 	free(R);
 
-    char* copy = NULL;
-    if(VALIDATE==1 && MODE==5){
-        copy = (char*) malloc((n+1)*sizeof(char));
-        strcpy(copy, (char*)str);
-    }
+  char* copy = NULL;
+  if(VALIDATE==1 && MODE==5){
+		copy = (char*) malloc((n+1)*sizeof(char));
+		strcpy(copy, (char*)str);
+  }
 
 	//sorted array
 	uint_t *LA = (uint_t*) malloc(n*sizeof(int_t));
@@ -137,7 +138,7 @@ int VALIDATE=0, MODE=0;
 			break;
 
 		case 5:	printf("## BWT_INPLACE_LYN ##\n"); 
-            bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
+      bwt_lyndon_inplace((char*)str, (uint_t*)LA, n);
 			break;
 
 		default: break;
@@ -146,31 +147,50 @@ int VALIDATE=0, MODE=0;
 	// validate	
 	if(VALIDATE==1){
 
-        if(MODE==5){
-            free(str);
-            str = (unsigned char*) copy;
-        }
+		if(MODE==5){
+			free(str);
+  		str = (unsigned char*) copy;
+  	}
 
-        if(!lyndon_check(str, LA, n, 0)){
-            printf("isNOTLyndonArray!!\n");
-            fprintf(stderr, "ERROR\n");
-        }
-        else {
-            printf("isLyndonArray!!\n");
-        }
+  	if(!lyndon_check(str, LA, n, 0)){
+			printf("isNOTLyndonArray!!\n");
+  		fprintf(stderr, "ERROR\n");
+  	}
+  	else {
+			printf("isLyndonArray!!\n");
+  	}
 	}
 
-    #if DEBUG
+  #if DEBUG
 	for(i=0; i<min(n,20); i++){
 
 		printf("%" PRIdN ") %" PRIdN "\t", i, LA[i]);
-  	    printf("%c\t", str[i]-1);
+  	printf("%c\t", str[i]-1);
 		int_t j=i;
 		for(j=i; j<(int_t) min(i+10,i+LA[i]+1); j++)
 			printf("%c", str[j]-1);
 		printf("\n");
 	}
-    #endif
+  #endif
+
+	if(COUNT==1){
+		i=0;
+		int_t count=0, max=0;
+		while(i<n){
+			#if DEBUG
+				printf("%d\t%d\n", i, LA[i]);
+			#endif
+			count++;
+			if(LA[i]>max) max=LA[i];
+			i+=LA[i];
+		}
+
+		printf("##\n");
+		printf("Number of Lyndon factors: % "PRIdN"\n", count);
+		printf("Average length: %.2lf\n", (double)n/(double)count);
+		printf("Maximum length: % "PRIdN"\n", max);
+		printf("##\n");
+	}
 
 	free(LA);
 	free(str);
